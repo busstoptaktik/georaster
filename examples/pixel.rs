@@ -17,6 +17,10 @@ fn main() {
 
     let img_file = BufReader::new(File::open(src_fn).expect("Open input file"));
     let mut tiff = GeoTiffReader::open(img_file).expect("Open Tiff");
-    let pixel = tiff.read_pixel(x, y);
-    println!("{pixel}");
+
+    for i in 0..tiff.image_info().samples {
+        tiff.select_raster_band(i + 1).unwrap();
+        let pixel = tiff.read_pixel(x, y);
+        println!("{pixel}");
+    }
 }
